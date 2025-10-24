@@ -39,7 +39,7 @@ services:
   # -----------------------
   frontend:
     build:
-      context: ../top-deck-front
+      context: ../top-decked-front
       dockerfile: docker/Dockerfile
     container_name: topdeck-frontend
     restart: always
