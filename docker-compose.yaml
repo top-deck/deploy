@@ -23,7 +23,7 @@ services:
 
   frontend:
     build:
-      context: ../top-decked-front
+      context: ../top-decked-frontend
       dockerfile: docker/Dockerfile
     container_name: topdeck-frontend
     restart: always
