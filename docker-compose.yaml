@@ -1,9 +1,6 @@
 version: "3.9"
 
 services:
-  # -----------------------
-  # Banco de Dados Postgres
-  # -----------------------
   db:
     image: postgres:latest
     container_name: postgres
@@ -12,15 +9,9 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
-    ports:
-      - "${POSTGRES_PORT}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql
 
-
-  # -----------------------
-  # Backend (FastAPI)
-  # -----------------------
   backend:
     build:
       context: ../top-decked-backend
@@ -31,12 +22,7 @@ services:
       - ./.env
     depends_on:
       - db
-    ports:
-      - "7007:7007"
 
-  # -----------------------
-  # Frontend (React)
-  # -----------------------
   frontend:
     build:
       context: ../top-decked-front
@@ -45,9 +31,18 @@ services:
     restart: always
     env_file:
       - ./.env
-    ports:
-      - "5173:5173"
     depends_on:
+      - backend
+
+  nginx:
+    build:
+      context: ./docker/nginx
+    container_name: topdeck-nginx
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
       - backend
 
 volumes:
